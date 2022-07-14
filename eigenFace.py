@@ -1,21 +1,23 @@
 from __future__ import division
-import os
-import numpy as np
-import scipy.stats as ss
-import cv2
 import matplotlib.pyplot as plt
 import bunch
 import fnmatch
 import re
+import scipy.stats as ss
+import cv2
 import collections
+import os
+import numpy as np
 
-# All images are supposed to be the same size, say, N*L
-IMAGE_DIR = "C:\\fsu\class\\computer vision\\code\\term\\EigenFace\\training_data"
-TEST_DIR  = "C:\\fsu\class\\computer vision\\code\\term\\EigenFace\\test_data"
+
+
+
+IMAGE_DIR = "C:\\babin\project\\computer vision\\code\\term\\EigenFace\\training_data"
+TEST_DIR  = "C:\\babin\project\\computer vision\\code\\term\\EigenFace\\test_data"
 
 
 class EigenFace(object):
-    # load images, and start other processing
+    # load images,start other processing
     def __init__(self, image_path=IMAGE_DIR,suffix="*.*",variance_pct=0.99,knn=5):
         # the least variance percentage we want the top K eigen vector to cover.
         self.variance_pct = variance_pct
@@ -101,7 +103,7 @@ class EigenFace(object):
     def getWeight4img(self,img):
         return self.getWeight4NormalizedImg(img.flatten-self.eigen.mean_vector)
 
-    def porject2eigenFaces(self, img,k=-1):
+    def project2eigenFaces(self, img,k=-1):
         if k<0:
             k = self.K
         ws = self.getWeight4NormalizedImg(img)
@@ -109,10 +111,10 @@ class EigenFace(object):
         # imgNew = np.dot(u,ws)
         imgNew = np.dot(self.eigen.u[:,0:k],ws[0:k])
         fig,axarr = plt.subplots(1,2)
-        axarr[0].set_title(" porject2eigenFaces: original")
+        axarr[0].set_title(" project2eigenFaces: original")
         axarr[0].imshow(img.reshape(self.imgShape) + self.get_average_weight_matrix(), cmap=plt.cm.gray)
         # axarr[0].imshow(img.reshape(self.imgShape) , cmap=plt.cm.gray)
-        axarr[1].set_title(" porject2eigenFaces: projection")
+        axarr[1].set_title(" project2eigenFaces: projection")
         axarr[1].imshow(imgNew.reshape(self.imgShape) + self.get_average_weight_matrix(), cmap=plt.cm.gray)
         # axarr[1].imshow(imgNew.reshape(self.imgShape), cmap=plt.cm.gray)
         return imgNew
@@ -158,7 +160,7 @@ class EigenFace(object):
 
     ################   --------- show the result --------- ###################
 
-    def plot_image_dictionary(self):
+    def plotimage_dictionary(self):
         dictionary = self.image_dictionary
         num_row_x = num_row_y = int(np.floor(np.sqrt(len(dictionary)-1))) + 1
         fig, axarr = plt.subplots(num_row_x, num_row_y)
@@ -244,7 +246,7 @@ class EigenFace(object):
 eigen_face = EigenFace(variance_pct=0.99,knn=1)
 ### for yale face dataset
 #eigen_face = EigenFace(variance_pct=0.99,knn=1,suffix="*[0-9].pgm")
-eigen_face.plot_image_dictionary()
+eigen_face.plotimage_dictionary()
 eigen_face.plot_eigen_vector(16)
 eigen_face.plot_mean_vector()
 eigen_face.plot_pca_components_proportions()
@@ -252,7 +254,7 @@ eigen_face.plot_pca_components_proportions()
 eigen_face.plotTrainingClass()
 eigen_face.K = eigen_face.get_number_of_components_to_preserve_variance(0.80)
 print (eigen_face.K)
-eigen_face.porject2eigenFaces(eigen_face.vector_matrix[:,1],-1)
+eigen_face.project2eigenFaces(eigen_face.vector_matrix[:,1],-1)
 
 plt.figure()
 plt.grid(True)

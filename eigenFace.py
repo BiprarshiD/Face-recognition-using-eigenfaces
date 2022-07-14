@@ -9,12 +9,8 @@ import collections
 import os
 import numpy as np
 
-
-
-
 IMAGE_DIR = "C:\\babin\project\\computer vision\\code\\term\\EigenFace\\training_data"
 TEST_DIR  = "C:\\babin\project\\computer vision\\code\\term\\EigenFace\\test_data"
-
 
 class EigenFace(object):
     # load images,start other processing
